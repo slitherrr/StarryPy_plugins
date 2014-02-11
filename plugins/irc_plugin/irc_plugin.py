@@ -47,9 +47,11 @@ class IrcPlugin(BasePlugin):
 
     def on_chat_sent(self, data):
         parsed = chat_sent().parse(data.data)
-
-        for p in self.irc_factory.irc_clients.itervalues():
-            p.msg(self.channel, "<%s> %s" % (self.protocol.player.name.encode("utf-8"), parsed.message.encode("utf-8")))
+    
+        
+        if not parsed.message.startswith('/'):
+            for p in self.irc_factory.irc_clients.itervalues():
+                p.msg(self.channel, "<%s> %s" % (self.protocol.player.name.encode("utf-8"), parsed.message.encode("utf-8")))
 
         return True
 
